@@ -38,6 +38,7 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
       setIsUploading(false);
       setFiles(null);
       setProgress(0);
+      (e.target as HTMLFormElement).reset();
     });
   };
 
