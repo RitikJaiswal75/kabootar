@@ -1,18 +1,49 @@
 import axios from "axios";
 import { fileTypes } from "../../constants/fileTypes";
 import FileTypeCard from "./FileTypeCard";
+import { useMemo } from "react";
 
-const FileUpload = () => {
-  const instance = axios.create({
-    baseURL: "http://192.168.31.21:3000",
-    onUploadProgress: (progressEvent) => console.log(progressEvent.loaded),
-  });
+type FileUploadProps = {
+  setProgress: (progress: number) => void;
+  setFiles: (files: File[] | null) => void;
+};
+
+const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
+  const instance = useMemo(() => {
+    return axios.create({
+      onUploadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / (progressEvent.total || 1)
+        );
+        setProgress(percentCompleted);
+      },
+    });
+  }, []);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    instance.post("/", data).then((res) => {
-      console.log(res);
+    const data = new FormData();
+    const file = document.querySelector("input[type=file]") as HTMLInputElement;
+    if (file && file.files) {
+      Array.from(file.files).forEach((f) => {
+        data.append("files", f);
+      });
+    }
+    instance.post("/", data);
+  };
+
+  const handleFileList = () => {
+    const allFiles: File[] = [];
+    const fileInputs = document.querySelectorAll("input[type=file]");
+    fileInputs.forEach((fileInput) => {
+      const file = fileInput as HTMLInputElement;
+      if (file && file.files) {
+        Array.from(file.files).forEach((f) => {
+          allFiles.push(f);
+        });
+      }
     });
+    setFiles(allFiles);
   };
   return (
     <>
@@ -25,7 +56,11 @@ const FileUpload = () => {
         <div className="flex gap-8 justify-center items-center flex-wrap">
           {fileTypes.map((fileType) => {
             return (
-              <FileTypeCard key={fileType.fileType} fileTypeData={fileType} />
+              <FileTypeCard
+                key={fileType.fileType}
+                fileTypeData={fileType}
+                setFiles={handleFileList}
+              />
             );
           })}
         </div>
