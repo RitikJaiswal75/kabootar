@@ -12,20 +12,6 @@ const Navbar = () => {
           <h2 className="font-bold text-xl">tar</h2>
         </div>
       </div>
-      <div>
-        <ul className="flex items-center justify-center gap-4">
-          <li>
-            <a href="/about" className="text-white">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="/contact" className="text-white">
-              Contact
-            </a>
-          </li>
-        </ul>
-      </div>
     </nav>
   );
 };

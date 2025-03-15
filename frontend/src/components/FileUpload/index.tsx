@@ -12,9 +12,8 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
   const instance = useMemo(() => {
     return axios.create({
       onUploadProgress: (progressEvent) => {
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / (progressEvent.total || 1)
-        );
+        const { loaded, total } = progressEvent;
+        const percentCompleted = Math.round((loaded * 100) / (total || 1));
         setProgress(percentCompleted);
       },
     });
@@ -23,12 +22,16 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData();
-    const file = document.querySelector("input[type=file]") as HTMLInputElement;
-    if (file && file.files) {
-      Array.from(file.files).forEach((f) => {
-        data.append("files", f);
-      });
-    }
+    const files = document.querySelectorAll(
+      "input[type=file]"
+    ) as unknown as HTMLInputElement[];
+    files.forEach((file) => {
+      if (file && file.files) {
+        Array.from(file.files).forEach((f) => {
+          data.append("files", f);
+        });
+      }
+    });
     instance.post("/", data);
   };
 

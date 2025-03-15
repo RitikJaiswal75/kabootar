@@ -18,8 +18,10 @@ func main() {
 	SetupCors(app)
 
 	app.GET("/", func(c *gin.Context) {
-		c.File("index.html")
+		c.File("./build/index.html")
 	})
+
+	app.Static("/assets", "./build/assets")
 
 	app.POST("/", func(c *gin.Context) {
 		form, err := c.MultipartForm()
@@ -34,8 +36,8 @@ func main() {
 			return
 		}
 
+		uuid := uuid.New().String()
 		for _, file := range files {
-			uuid := uuid.New().String()
 			folderPath := dst + uuid + "/"
 			if err := os.MkdirAll(folderPath, os.ModePerm); err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create directory"})

@@ -1,7 +1,6 @@
 import Navbar from "./components/Navbar";
 import FileUpload from "./components/FileUpload";
 import { useState } from "react";
-import Progress from "./components/Progress";
 import FileList from "./components/FileList";
 
 function App() {
@@ -12,8 +11,7 @@ function App() {
     <>
       <Navbar />
       <FileUpload setProgress={setProgress} setFiles={setFiles} />
-      <Progress uploaded={progress} />
-      {files ? <FileList files={files} /> : null}
+      {files ? <FileList files={files} progress={progress} /> : null}
     </>
   );
 }

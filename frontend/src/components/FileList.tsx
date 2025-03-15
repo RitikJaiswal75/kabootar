@@ -1,5 +1,6 @@
 type FileListProps = {
   files: File[];
+  progress: number;
 };
 
 // Helper function to format file size
@@ -9,12 +10,15 @@ const formatFileSize = (size: number): string => {
   return `${(size / (1024 * 1024)).toFixed(2)} MB`;
 };
 
-const FileList = ({ files }: FileListProps) => {
+const FileList = ({ files, progress }: FileListProps) => {
   return (
     <div className="container mx-auto p-4">
       {files.length > 0 && (
         <div className="w-full px-2">
-          <div className="border-b-2 border-emerald-950 p-4">
+          <div className="border-b-2 border-emerald-950 p-4 relative">
+            <div
+              className={`bg-blue-200 opacity-40 w-[${progress}%] h-full absolute left-0 text-end text-white font-bold text-3xl`}
+            ></div>
             <h2 className="font-bold text-2xl text-center">Files</h2>
           </div>
           {Array.from(files).map((file, index) => (
