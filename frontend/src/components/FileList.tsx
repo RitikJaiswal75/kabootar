@@ -17,8 +17,11 @@ const FileList = ({ files, progress }: FileListProps) => {
         <div className="w-full px-2">
           <div className="border-b-2 border-emerald-950 p-4 relative">
             <div
-              className={`bg-blue-200 opacity-40 w-[${progress}%] h-full absolute left-0 text-end text-white font-bold text-3xl`}
-            ></div>
+              className={`bg-blue-200 opacity-40 h-full absolute left-0 text-end text-white font-bold text-3xl`}
+              style={{ width: `${progress}%` }}
+            >
+              {progress}%
+            </div>
             <h2 className="font-bold text-2xl text-center">Files</h2>
           </div>
           {Array.from(files).map((file, index) => (
