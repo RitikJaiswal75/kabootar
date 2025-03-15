@@ -1,0 +1,8 @@
+/**/node_modules
+/uploads/
+/**/pnpm-lock.yaml
+
+*.exe
+*.zip
+
+.env
