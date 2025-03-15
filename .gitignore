@@ -1,6 +1,7 @@
 /**/node_modules
 /uploads/
 /**/pnpm-lock.yaml
+/build/
 
 *.exe
 *.zip
