@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fileTypes } from "../../constants/fileTypes";
 import FileTypeCard from "./FileTypeCard";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type FileUploadProps = {
   setProgress: (progress: number) => void;
@@ -9,6 +9,7 @@ type FileUploadProps = {
 };
 
 const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
+  const [isUploading, setIsUploading] = useState(false);
   const instance = useMemo(() => {
     return axios.create({
       onUploadProgress: (progressEvent) => {
@@ -21,6 +22,7 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsUploading(true);
     const data = new FormData();
     const files = document.querySelectorAll(
       "input[type=file]"
@@ -32,7 +34,11 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
         });
       }
     });
-    instance.post("/", data);
+    instance.post("/", data).finally(() => {
+      setIsUploading(false);
+      setFiles(null);
+      setProgress(0);
+    });
   };
 
   const handleFileList = () => {
@@ -70,7 +76,8 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
         <input
           type="submit"
           value="🚀 Share"
-          className="p-4 rounded-lg text-xl bg-blue-900 w-3xs font-bold text-white cursor-pointer hover:bg-blue-800 mx-auto"
+          disabled={isUploading}
+          className="p-4 rounded-lg text-xl bg-blue-900 w-3xs font-bold text-white cursor-pointer hover:bg-blue-800 mx-auto disabled:opacity-50"
         />
       </form>
     </>
