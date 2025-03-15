@@ -51,7 +51,7 @@ This project is licensed under the MIT License.
 
 2. **Frontend**:
 
-   - The frontend files are located in the `frontend` directory.
+   - The frontend file is `index.html` in the `root` directory.
    - Edit the HTML, CSS, or JavaScript files to update the user interface.
    - If using a frontend framework, ensure you rebuild the frontend assets as required.
 
