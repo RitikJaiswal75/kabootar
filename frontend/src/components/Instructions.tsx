@@ -5,12 +5,27 @@ import Steps from "./Steps";
 const Instructions = () => {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.origin).then(() => {
+    if (copied) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(window.location.origin).then(() => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        });
+      });
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = window.location.origin;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand("copy");
       setCopied(true);
+      document.body.removeChild(textArea);
       setTimeout(() => {
         setCopied(false);
       }, 1000);
-    });
+    }
   };
   return (
     <div>
