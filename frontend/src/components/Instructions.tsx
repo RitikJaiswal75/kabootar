@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { instructions } from "../constants/instructions";
 import Steps from "./Steps";
+import QRCode from "react-qr-code";
 
 const Instructions = () => {
   const [copied, setCopied] = useState(false);
@@ -32,6 +33,9 @@ const Instructions = () => {
       <h1 className="text-3xl font-bold text-center">Instructions</h1>
       <div className="container mx-auto p-4">
         <div className="w-full px-2">
+          <div className="flex items-center justify-center p-4">
+            <QRCode value={window.location.origin} className="border-2" />
+          </div>
           <div className="flex w-full py-4 border-b-2 px-4 border-emerald-950 justify-between items-center bg-white rounded relative">
             <p className="text-black font-regular text-lg">
               {window.location.origin}
