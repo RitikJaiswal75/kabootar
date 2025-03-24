@@ -49,37 +49,9 @@ const Modal = ({ title, openModal = true }: ModalProps) => {
               className="ri-send-plane-fill text-5xl"
             ></motion.i>
             <p className="text-lg font-bold bg-emerald-600 rounded-full truncate px-2">
-              Send to mobile
+              Send
             </p>
           </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            className="rounded-full bg-emerald-800 p-4 flex flex-col gap-2 w-30 h-30 items-center justify-center cursor-pointer"
-            onClick={() => {
-              const queryParams = new URLSearchParams({
-                role: "sender",
-                client: "pc",
-              });
-              window.location.href = `?${queryParams.toString()}`;
-            }}
-          >
-            <motion.i
-              initial={{ translateX: 0, translateY: 0 }}
-              whileHover={{
-                translateX: [0, 10, 20, 30, 20, 10, 0],
-                translateY: [0, -10, -20, -30, -20, -10, 0],
-              }}
-              transition={{
-                duration: 1,
-              }}
-              className="ri-send-plane-fill text-5xl"
-            ></motion.i>
-            <p className="text-lg font-bold bg-emerald-600 rounded-full truncate px-2">
-              Send to PC
-            </p>
-          </motion.button>
-        </div>
-        <div className="flex items-center justify-center px-4 mt-8">
           <motion.button
             whileHover={{ scale: 1.1 }}
             className="rounded-full bg-amber-800 p-4 flex flex-col gap-2 w-30 h-30 items-center justify-center cursor-pointer"
