@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"runtime"
+	"syscall"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -29,7 +30,7 @@ func main() {
 	// Handle program termination signals to clean up tempDir
 	go func() {
 		sigChan := make(chan os.Signal, 1)
-		signal.Notify(sigChan, os.Interrupt, os.Kill)
+		signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 		<-sigChan
 		cleanup()
 		os.Exit(0)
