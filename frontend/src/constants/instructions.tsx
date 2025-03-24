@@ -6,3 +6,9 @@ export const instructions = [
   "step 5: Wait for the files to be received",
   "step 6: You can find the received files in the same folder where the app is running",
 ];
+
+export const mobileInstructions = [
+  "step 1: Connect the sender device to the same network as this device",
+  "step 2: Open the Above URL in the receiver device",
+  "step 3: Selectively download the file",
+];
