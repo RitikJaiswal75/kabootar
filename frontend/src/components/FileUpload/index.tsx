@@ -10,6 +10,9 @@ type FileUploadProps = {
 
 const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
+  const queryParams = new URLSearchParams(window.location.search);
+  const client = queryParams.get("client");
+
   const instance = useMemo(() => {
     return axios.create({
       onUploadProgress: (progressEvent) => {
@@ -34,12 +37,31 @@ const FileUpload = ({ setProgress, setFiles }: FileUploadProps) => {
         });
       }
     });
-    instance.post("/", data).finally(() => {
-      setIsUploading(false);
-      setFiles(null);
-      setProgress(0);
-      (e.target as HTMLFormElement).reset();
-    });
+    if (client === "mobile") {
+      instance
+        .post(`/mobile`, data)
+        .then((res) => {
+          const queryParams = new URLSearchParams({
+            mode: "receive",
+            uid: res.data.uid,
+            device: "mobile",
+          });
+          window.location.href = `?${queryParams.toString()}`;
+        })
+        .finally(() => {
+          setIsUploading(false);
+          setFiles(null);
+          setProgress(0);
+          (e.target as HTMLFormElement).reset();
+        });
+    } else {
+      instance.post(`/`, data).finally(() => {
+        setIsUploading(false);
+        setFiles(null);
+        setProgress(0);
+        (e.target as HTMLFormElement).reset();
+      });
+    }
   };
 
   const handleFileList = () => {
