@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"path/filepath"
 	"runtime"
 	"syscall"
 
@@ -15,6 +16,16 @@ import (
 )
 
 func main() {
+	files, err := filepath.Glob("./mobile_uploads_*")
+	if err != nil {
+		fmt.Printf("Failed to match files: %v\n", err)
+	} else {
+		for _, file := range files {
+			if err := os.RemoveAll(file); err != nil {
+				fmt.Printf("Failed to remove file or directory: %v\n", err)
+			}
+		}
+	}
 	dst := "./uploads/"
 	app := gin.Default()
 	tempDir, err := os.MkdirTemp("./", "mobile_uploads_*")
